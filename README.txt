@@ -4,6 +4,7 @@ The Size of the Hall is 100
 The price of Each ticket is 100.
 The time interval after which holded seats are removed is 10000 milliseconds.
 All the above parameters are configurable using a properties file .
+No log4j configuration / logging mechanism is implementated. I have used a custom Exception class to create System defined errors and System.out.println in rare occasions.  
 
 Run the following command to run and execute the project :
 git clone https://github.com/rishu287/Ticket-Servce.git
@@ -15,3 +16,4 @@ The project can be imported in a Java editor like Eclipse / Net Beans and test c
 
 There is also a plugin added to include test coverage which is Jacoco. It will run as part of the maven test phase and generate report . The report can be
 viewed under target\site\jacoco\index.html.
+
