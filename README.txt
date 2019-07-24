@@ -17,3 +17,6 @@ The project can be imported in a Java editor like Eclipse / Net Beans and test c
 There is also a plugin added to include test coverage which is Jacoco. It will run as part of the maven test phase and generate report . The report can be
 viewed under target\site\jacoco\index.html.
 
+All my test cases and application code  is  following a single threaded model i.e when each test case runs it creates a new Object of TicketService API and thus
+has its own set of holded seats and reserved seats . The design will entirely change if I go with assumption that the test cases can be executed in parrallal with multiple
+thread execution
