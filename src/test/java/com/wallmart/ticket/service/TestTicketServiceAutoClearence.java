@@ -20,7 +20,7 @@ public class TestTicketServiceAutoClearence {
 		ticketService.findAndHoldSeats(20, "helloo@gmail.com");
 		assertEquals(0, ticketService.numSeatsAvailable());
 		long currentTimeinMillisec = System.currentTimeMillis();
-		System.out.println("Waiting to Clear of Holded seats ... Please have patience");
+		System.out.println("Waiting to Clear Holded seats ... please have patience");
 		while(currentTimeinMillisec + 20000L > System.currentTimeMillis())
 		{
 			// Just a loop to kill time
@@ -38,7 +38,7 @@ public class TestTicketServiceAutoClearence {
 		ticketService.findAndHoldSeats(20, "helloo@gmail.com");
 		assertEquals(20, ticketService.numSeatsAvailable());
 		Thread t = new Thread();
-		System.out.println("Waiting for Clearing of Holded seats ... Please have patience");
+		System.out.println("Waiting to Clear Holded seats ... please have patience");
 		t.sleep(20000L);
 		assertEquals(100, ticketService.numSeatsAvailable());
 	}

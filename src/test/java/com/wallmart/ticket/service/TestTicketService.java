@@ -59,6 +59,12 @@ public class TestTicketService {
 		assertEquals(seathold.toString(), confirmation);
 	}
 	
+	@Test(expected = SeatHoldException.class)
+	public void testReserveSeatWithInvalidEmail()  {
+		TicketService ticketService = new TicketServiceImplementation();
+		ticketService.reserveSeats(10, "pp-0com");
+	}
+	
 	@Test
 	public void testSeatAvaibility() {
 		TicketService ticketService = new TicketServiceImplementation();

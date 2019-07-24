@@ -12,6 +12,7 @@ import com.wallmart.ticket.model.SeatHold;
 
 public class TicketServiceImplementation implements TicketService {
 
+	private static final long DEFAULT_TIMEOUT = 10000;
 	Map<String, SeatHold> seatHolded = new HashMap<>();
 	Map<String, SeatHold> seatReserved = new HashMap<>();
 	EmailValidator emailValidator = EmailValidator.getInstance();
@@ -23,6 +24,9 @@ public class TicketServiceImplementation implements TicketService {
 		currentTimeinMillisec = System.currentTimeMillis();
 	}
 
+	/**
+	 * Loads properties from a config file
+	 */
 	private void loadProperties() {
 		try {
 			properties.load(TicketServiceImplementation.class.getClassLoader()
@@ -32,14 +36,32 @@ public class TicketServiceImplementation implements TicketService {
 		}
 	}
 
+	/**
+	 * Clears the holded seat after a specicfic interval of time. The time interval
+	 * can be controlled from a config file. If nothing is configured default time
+	 * will be taken.
+	 * 
+	 */
 	private void clearHoldedSeats() {
-		Long expiredTimestamp = currentTimeinMillisec + 10000L;
-		if (expiredTimestamp < System.currentTimeMillis())
-		{
+
+		long timeOut = DEFAULT_TIMEOUT;
+		if (properties.get(TIMEOUT) != null) {
+			timeOut = Long.valueOf((String) properties.get(TIMEOUT));
+		}
+
+		Long expiredTimestamp = currentTimeinMillisec + timeOut;
+		if (expiredTimestamp < System.currentTimeMillis()) {
 			System.out.println("Clearing out holded objects");
-		    seatHolded.clear();
+			seatHolded.clear();
 		}
 	}
+
+	/**
+	 * Implementation - The number of seats in the venue that are neither held nor
+	 * reserved
+	 * 
+	 * @return the number of tickets available in the venue
+	 */
 
 	@Override
 	public int numSeatsAvailable() {
@@ -62,8 +84,17 @@ public class TicketServiceImplementation implements TicketService {
 		return numberofSeatsAvailable;
 	}
 
+	/**
+	 * Implementation - Find and hold the best available seats for a customer
+	 * 
+	 * @param numSeats      the number of seats to find and hold
+	 * @param customerEmail unique identifier for the customer
+	 * @return a SeatHold object identifying the specific seats and related
+	 *         information
+	 */
+
 	@Override
-	public SeatHold findAndHoldSeats(int numSeats, String customerEmail) {		
+	public SeatHold findAndHoldSeats(int numSeats, String customerEmail) {
 		if (numSeats <= 0) {
 			throw new SeatHoldException("Number of seats has to be atleast 1");
 		}
@@ -81,6 +112,16 @@ public class TicketServiceImplementation implements TicketService {
 		seatHolded.put(customerEmail, seathold);
 		return seathold;
 	}
+
+	/**
+	 * 
+	 * Implementation -Commit seats held for a specific customer
+	 * 
+	 * @param seatHoldId    the seat hold identifier
+	 * @param customerEmail the email address of the customer to which the seat hold
+	 *                      is assigned
+	 * @return a reservation confirmation code
+	 */
 
 	@Override
 	public String reserveSeats(int seatHoldId, String customerEmail) {

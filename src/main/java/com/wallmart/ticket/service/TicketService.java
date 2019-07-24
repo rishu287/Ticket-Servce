@@ -7,7 +7,7 @@ public interface TicketService {
 	
  public static final String SEAT_SIZE="seatSize";	
  public static final String SEAT_PRICE="seatPrice";
- 
+ public static final String TIMEOUT="timeout";
 
 	
 /**
