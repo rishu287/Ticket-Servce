@@ -5,8 +5,9 @@ import com.wallmart.ticket.model.SeatHold;
 public interface TicketService {
 
 	
- public static final int SEAT_SIZE=100;	
- public static final double SEAT_PRICE=100;
+ public static final String SEAT_SIZE="seatSize";	
+ public static final String SEAT_PRICE="seatPrice";
+ 
 
 	
 /**

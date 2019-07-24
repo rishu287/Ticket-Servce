@@ -42,12 +42,51 @@ public class TestTicketService {
 	}
 	
 	@Test
-	public void testAndReserveSeat()  {
+	public void testReserveSeat()  {
 		TicketService ticketService = new TicketServiceImplementation();
 		SeatHold seathold = ticketService.findAndHoldSeats(10, "rishu287@gmail.com");
 		assertEquals(90, ticketService.numSeatsAvailable());
 		String confirmation=ticketService.reserveSeats(seathold.getSeatHoldId(), "rishu287@gmail.com");
 		assertEquals(seathold.toString(), confirmation);
 	}
+	
+	@Test(expected = SeatHoldException.class)
+	public void testReserveSeatNotHolded()  {
+		TicketService ticketService = new TicketServiceImplementation();
+		SeatHold seathold = ticketService.findAndHoldSeats(10, "rishu287@gmail.com");
+		assertEquals(90, ticketService.numSeatsAvailable());
+		String confirmation=ticketService.reserveSeats(seathold.getSeatHoldId(), "popo@gmail.com");
+		assertEquals(seathold.toString(), confirmation);
+	}
+	
+	@Test
+	public void testSeatAvaibility() {
+		TicketService ticketService = new TicketServiceImplementation();
+		SeatHold seathold = ticketService.findAndHoldSeats(10, "rishu287@gmail.com");
+		assertEquals(90, ticketService.numSeatsAvailable());
+		ticketService.reserveSeats(seathold.getSeatHoldId(), "rishu287@gmail.com");
+		seathold = ticketService.findAndHoldSeats(20, "rishu287@gmail.com");
+		assertEquals(70, ticketService.numSeatsAvailable());
+		ticketService.findAndHoldSeats(50, "popo@gmail.com");
+		assertEquals(20, ticketService.numSeatsAvailable());
+		ticketService.findAndHoldSeats(20, "helloo@gmail.com");
+		assertEquals(0, ticketService.numSeatsAvailable());
+	}
+	
+	@Test(expected = SeatHoldException.class)
+	public void testHouseFull() {
+		TicketService ticketService = new TicketServiceImplementation();
+		SeatHold seathold = ticketService.findAndHoldSeats(10, "rishu287@gmail.com");
+		assertEquals(90, ticketService.numSeatsAvailable());
+		ticketService.reserveSeats(seathold.getSeatHoldId(), "rishu287@gmail.com");
+		seathold = ticketService.findAndHoldSeats(20, "rishu287@gmail.com");
+		assertEquals(70, ticketService.numSeatsAvailable());
+		ticketService.findAndHoldSeats(50, "popo@gmail.com");
+		assertEquals(20, ticketService.numSeatsAvailable());
+		ticketService.findAndHoldSeats(20, "helloo@gmail.com");
+		assertEquals(0, ticketService.numSeatsAvailable());
+		ticketService.findAndHoldSeats(20, "wallmart@gmail.com");
+	}	
+	
 	
 }
