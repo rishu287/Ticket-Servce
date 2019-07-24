@@ -32,7 +32,7 @@ public class TicketServiceImplementation implements TicketService {
 			properties.load(TicketServiceImplementation.class.getClassLoader()
 					.getResourceAsStream("ticket-service.properties"));
 		} catch (IOException e) {
-			throw new SeatHoldException("ticket-service.properties. The System will fail. ");
+			throw new SeatHoldException("No ticket-service.properties configured. The System will fail. ");
 		}
 	}
 
